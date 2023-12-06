@@ -67,6 +67,8 @@ struct SoundCreateInfo
 {
 
 	SoundBuffer buffer;
+
+	glm::vec3 position;
 };
 
 struct Sound
@@ -84,7 +86,7 @@ AURORA_API	static SoundBuffer LoadSoundBuffer(std::string path);
 
 	float pitch = 1.f;
 	float gain = 1.f;
-	bool loop = false;
+	bool loop = true;
 private:
 
 	ALuint source=-1;

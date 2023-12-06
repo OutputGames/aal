@@ -33,6 +33,8 @@ AudioMgr::AudioMgr()
  
 	cout << "Opened " << name << endl;
 
+	alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+
 	mainListener = new Listener;
 }
 
@@ -82,7 +84,7 @@ Sound::Sound(SoundCreateInfo* createInfo)
 {
 	//source = new SoLoud::Wav();
 	//source->load("testresources/plazatest.wav");
-	position = glm::vec3(0);
+	position = createInfo->position;
 
 	soundBuffer = createInfo->buffer;
 
@@ -94,6 +96,10 @@ Sound::Sound(SoundCreateInfo* createInfo)
 	alSource3f(source, AL_VELOCITY, 0, 0, 0);
 
 	alSourcei(source, AL_LOOPING, loop);
+
+	alSourcef(source, AL_ROLLOFF_FACTOR, 1);
+	alSourcef(source, AL_REFERENCE_DISTANCE, 6);
+	alSourcef(source, AL_MAX_DISTANCE, 15);
 	alSourcei(source, AL_BUFFER, soundBuffer.alBuffer);
 
 	alSourcePlay(source);
@@ -103,12 +109,13 @@ Sound::Sound(SoundCreateInfo* createInfo)
 void Sound::Play(AudioMgr* audioMgr)
 {
 	audioMgr->AddQueueEntry({ source });
-	source = AL_PLAYING;
+	state = AL_PLAYING;
 }
 
 void Sound::Update()
 {
 	alSource3f(source, AL_POSITION, position.x, position.y, position.z);
+	alSourcei(source, AL_LOOPING, loop);
 
 	if (state != AL_INITIAL) {
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
@@ -132,6 +139,13 @@ SoundBuffer Sound::LoadSoundBuffer(std::string path)
 
 	vector<u8> pcmData;
 	audioFile.writePCMToBuffer(pcmData);
+
+	bool isStereo = audioFile.isStereo();
+
+	if (isStereo)
+	{
+		cout << audioFile.iXMLChunk << endl;
+	}
 
 	auto convertFileToOpenALFormat = [](const AudioFile<float>& audioFile) {
 		int bitDepth = audioFile.getBitDepth();
