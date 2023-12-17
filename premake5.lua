@@ -16,14 +16,19 @@ project "AuroraAudioLibrary"
          "%{_OPTIONS['utilslocation']}/include/**" ,
          "%{_OPTIONS['utilslocation']}/vendor/glm/glm/**" ,
          "testresources/**",
-         "vendor/dr_libs/*.h"
+         "vendor/dr_libs/*.h",
+         "%{_OPTIONS['utilslocation']}".."/vendor/sdl2/include/**" , 
       }
    includedirs {
        "include/", 
        "vendor/alsoft/include/",
        "vendor/dr_libs/",
        "%{_OPTIONS['utilslocation']}".."/include", 
-       "%{_OPTIONS['utilslocation']}".."/vendor/glm" 
+       "%{_OPTIONS['utilslocation']}".."/vendor/glm",
+       "%{_OPTIONS['utilslocation']}".."/vendor/sdl2/include" 
+      }
+      libdirs {
+         "%{_OPTIONS['utilslocation']}".."/vendor/sdl2/lib"
       }
 
       links {"OpenAL32"}
@@ -36,6 +41,7 @@ project "AuroraAudioLibrary"
       runtime "Debug"
       libdirs {"vendor/alsoft/lib/Debug"}
       staticruntime "off"
+      links {"SDL2d", "SDL2maind"}
 
 
    filter "configurations:Release"
@@ -44,5 +50,6 @@ project "AuroraAudioLibrary"
       libdirs {"vendor/alsoft/lib/Release"}
       staticruntime "off"
       runtime "Release"
+      links {"SDL2", "SDL2main"}
    
    
