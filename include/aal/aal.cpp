@@ -83,7 +83,7 @@ void SoundBuffer::CreateALBuffer()
 Sound::Sound(SoundCreateInfo* createInfo)
 {
 	//source = new SoLoud::Wav();
-	//source->load("testresources/plazatest.wav");
+	//source->load("resources/plazatest.wav");
 	position = createInfo->position;
 
 	soundBuffer = createInfo->buffer;

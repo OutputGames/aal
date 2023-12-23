@@ -8,6 +8,8 @@ project "AuroraAudioLibrary"
    targetdir "%{_OPTIONS['corelocation']}/bin/%{cfg.buildcfg}"
    staticruntime "on"
 
+   defines {"_CRT_SECURE_NO_WARNINGS"}
+
    files {
        --"src/**",
         "include/**",
